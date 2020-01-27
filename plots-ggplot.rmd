@@ -28,4 +28,73 @@ ca_np <- read_csv(here("data/ca_np.csv"))
 
 ci_np <- read_excel(here("data", "ci_np.xlsx"))
 ```
+# nake my own first graph
+We're going to a make a line plot of year (x-variable) vs visitors (y-variable) in ggplot:
+
+```{r plot}
+
+ggplot(data = ci_np, aes(x = year, y = visitors)) +
+  geom_line()
+
+#can use geom_point or goem_area for different types of graphs
+
+```
+Make a base layer for my CI plots:
+```{r}
+gg_base <- ggplot(data = ci_np, aes(x = year, y = visitors)) +
+  geom_line()
+
+gg_base + geom_point()
+```
+# Now let's start customizing!
+- line / point colors: color
+- change line type: linetype
+-change point style: pch
+- Change transparency: alpha
+```{r}
+gg_base + 
+  geom_line(
+    color = "purple"
+  )
+
+```
+Activity: create a ggplot scatterplot (geom_point) that has a triangle symbols (hint: ?pch), of a non-default size (size=#) and that are updated color.
+
+```{r}
+gg_base + 
+  geom_point(
+    color = "red",
+    pch = 2,
+    size = 4
+  
+  )
+
+
+```
+# Update graph aesthetics based on variables
+
+```{r}
+gg_base +
+  geom_point(
+    aes(size = visitors,
+    color = year)
+  )
+#add an argument to update the color based on the year value
+
+```
+# Use gg-theme for overall updates
+- theme_light()
+- theme_minimal()
+- theme_bw()
+```{r}
+gg_base + 
+  geom_area() +
+  theme_linedraw()
+
+```
+# Create a multi-series line plot using data for all CA national parks
+```{r}
+ggplot(data = ca_np, aes(x=year, y = visitors, group = park_name)) +
+  geom_line()
+```
 
