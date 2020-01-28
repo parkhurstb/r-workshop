@@ -15,7 +15,12 @@ library(skimr) #install.packages("skimr")
 library(kableExtra) #install.packages("kableExtra")
 
 #read in the lobster data
-lobsters <- read_xlsx(here("data", "lobsters.xlsx"),
+#lobsters <- read_xlsx(here("data", "lobsters.xlsx"),
+ #                     skip = 4)
+
+#Sent wrong data
+#read in the lobster data
+lobsters <- read_xlsx(here("data", "lobsters2.xlsx"),
                       skip = 4)
 
 ```
