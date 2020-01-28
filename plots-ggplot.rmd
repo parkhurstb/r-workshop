@@ -94,7 +94,21 @@ gg_base +
 ```
 # Create a multi-series line plot using data for all CA national parks
 ```{r}
-ggplot(data = ca_np, aes(x=year, y = visitors, group = park_name)) +
-  geom_line()
+ggplot(data = ca_np, aes(x=year, y = visitors, group = park_name, color = park_name)) +
+  geom_line() +
+  theme_get()
+
+```
+#this code will also work:
+```{r}
+my_np_graph <- ggplot(data = ca_np, aes(x = year, y= visitors)) + 
+  geom_point(aes(color = park_name), show.legend = FALSE) + 
+  facet_wrap(~park_name, scales = "free") +
+  theme_minimal()
+
+```
+Export my graph as a .png
+```{r}
+ggsave(plot = my_np_graph, here("figures", "np_graph.png"))
 ```
 

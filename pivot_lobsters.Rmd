@@ -1,0 +1,85 @@
+---
+title: "Pivot Lobsters"
+author: "Ben Parkhurst"
+date: "January 27, 2020"
+output: html_document
+---
+
+
+Install Packages and read in lobster data:
+```{r}
+library(tidyverse)
+library(readxl)
+library(here)
+library(skimr) #install.packages("skimr")
+library(kableExtra) #install.packages("kableExtra")
+
+#read in the lobster data
+lobsters <- read_xlsx(here("data", "lobsters.xlsx"),
+                      skip = 4)
+
+```
+Viewing our data with skimmer
+```{r}
+skimr::skim(lobsters)
+#skim(lobsters would be equivalent code)
+
+```
+#Pivot Tables
+In R, Pivot tables are: `group_by() %>% summarize()`
+`n()` function will count observations
+
+```{r}
+#group by year
+lobsters %>% 
+  group_by(year) %>% 
+  summarize(count_by_year = n())
+#group by year and site
+lobsters %>% 
+  group_by(year,site) %>% 
+  summarize(count_by_year_site = n())
+#group by site and year
+lobsters %>% 
+  group_by(site,year) %>% 
+  summarize(count_by_year_site = n())
+```
+Summarize by multiple variable names
+And assign as an object
+```{r}
+siteyear_summary <- lobsters %>% 
+  group_by(site, year) %>% 
+  summarize(count_by_site_year = n(),
+            mean_size_mm = mean(size_mm, na.rm = TRUE),
+            sd_size_mm = sd(size_mm, na.rm = TRUE))
+```
+Table formatting with `kableExtra::Kable()`
+```{r}
+siteyear_summary %>% 
+  kable()
+```
+
+There are now `r nrow(lobsters)` total lobsters included in this report
+
+## Activity
+1 build from our analyses: calculate the median lobster size for each site and year (hint: `size_mm` and a function called `median`
+2. create a ggplot and save. For example:
+3. sync this to github
+
+```{r}
+siteyear_summary <- lobsters %>% 
+  group_by(site, year) %>% 
+  summarize(count_by_site_year = n(),
+            mean_size_mm = mean(size_mm, na.rm = TRUE),
+            sd_size_mm = sd(size_mm, na.rm = TRUE),
+            median_size_mm = median(size_mm, na.rm = TRUE))
+
+ggplot(data = siteyear_summary, aes(x=year, y=median_size_mm, color = site)) + 
+  geom_line()
+
+```
+Table formatting with `kableExtra::Kable()`
+```{r}
+siteyear_summary %>% 
+  kable()
+```
+
